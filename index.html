@@ -715,25 +715,45 @@
   }
 
   // Order form submit
+  // Đơn hàng được gửi vào Google Sheet qua Google Apps Script Web App.
+  // Sau khi deploy Apps Script (xem hướng dẫn), dán URL /exec vào đây:
+  const SHEET_WEBHOOK_URL = 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
+
   const orderForm = document.getElementById('orderForm');
   const formFields = document.getElementById('formFields');
   const successPanel = document.getElementById('successPanel');
+  const submitBtn = orderForm.querySelector('button[type="submit"]');
 
   orderForm.addEventListener('submit', function(e){
     e.preventDefault();
     const name = document.getElementById('fullname').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const address = document.getElementById('address').value.trim();
+    const note = document.getElementById('note').value.trim();
     const qty = Math.max(1, parseInt(qtyInput.value) || 1);
     const pkg = packages[currentPkg()];
+    const total = pkg.price * qty;
 
     if(!name || !phone || !address){ return; }
 
-    document.getElementById('successName').textContent = 'Cảm ơn ' + name + ', đơn hàng của bạn đã được ghi nhận.';
-    document.getElementById('successSummary').textContent = pkg.label + ' x ' + qty + ' — Tổng: ' + formatVND(pkg.price * qty);
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Đang gửi...';
 
-    formFields.style.display = 'none';
-    successPanel.classList.add('show');
+    fetch(SHEET_WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ name, phone, address, package: pkg.label, qty, total, note })
+    }).catch(function(err){ console.error('Gửi đơn hàng lỗi:', err); })
+      .finally(function(){
+        document.getElementById('successName').textContent = 'Cảm ơn ' + name + ', đơn hàng của bạn đã được ghi nhận.';
+        document.getElementById('successSummary').textContent = pkg.label + ' x ' + qty + ' — Tổng: ' + formatVND(total);
+
+        formFields.style.display = 'none';
+        successPanel.classList.add('show');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Đặt hàng ngay';
+      });
   });
 
   function resetForm(){
