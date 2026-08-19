@@ -1,6 +1,6 @@
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var p = e.parameter;
+  var p = JSON.parse(e.postData.contents);
 
   sheet.appendRow([
     new Date(),
