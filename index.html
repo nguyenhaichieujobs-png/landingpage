@@ -728,7 +728,6 @@
   const orderForm = document.getElementById('orderForm');
   const formFields = document.getElementById('formFields');
   const successPanel = document.getElementById('successPanel');
-  const submitBtn = orderForm.querySelector('button[type="submit"]');
 
   orderForm.addEventListener('submit', function(e){
     e.preventDefault();
@@ -742,24 +741,18 @@
 
     if(!name || !phone || !address){ return; }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Đang gửi...';
-
     fetch(SHEET_WEBHOOK_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ name, phone, address, package: pkg.label, qty, total, note })
-    }).catch(function(err){ console.error('Gửi đơn hàng lỗi:', err); })
-      .finally(function(){
-        document.getElementById('successName').textContent = 'Cảm ơn ' + name + ', đơn hàng của bạn đã được ghi nhận.';
-        document.getElementById('successSummary').textContent = pkg.label + ' x ' + qty + ' — Tổng: ' + formatVND(total);
+    }).catch(function(err){ console.error('Gửi đơn hàng lỗi:', err); });
 
-        formFields.style.display = 'none';
-        successPanel.classList.add('show');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Đặt hàng ngay';
-      });
+    document.getElementById('successName').textContent = 'Cảm ơn ' + name + ', đơn hàng của bạn đã được ghi nhận.';
+    document.getElementById('successSummary').textContent = pkg.label + ' x ' + qty + ' — Tổng: ' + formatVND(total);
+
+    formFields.style.display = 'none';
+    successPanel.classList.add('show');
   });
 
   function resetForm(){
