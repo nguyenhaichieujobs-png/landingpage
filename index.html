@@ -221,10 +221,6 @@
   .footer-grid ul a:hover{ color:var(--honey);}
   .footer-bottom{ border-top:1px solid rgba(255,255,255,0.12); padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:12.5px; color:#A9986E;}
 
-  .sticky-cta{ position:fixed; bottom:0; left:0; right:0; z-index:60; background:#fff; border-top:1px solid var(--line); padding:12px 20px; display:none; align-items:center; justify-content:space-between; gap:14px; box-shadow:0 -10px 30px rgba(0,0,0,0.08);}
-  .sticky-cta .stxt{ font-size:12.5px; color:var(--ink-soft);}
-  .sticky-cta .sprice{ font-family:'Playfair Display',serif; font-weight:700; color:var(--brick); font-size:17px;}
-
   @media (max-width: 980px){
     .hero-grid, .ing-grid, .benefit-layout, .aud-grid, .order-wrap{ grid-template-columns:1fr; }
     .benefit-layout.reverse .b-visual{ order:0;}
@@ -236,8 +232,25 @@
     .nav-links{ display:none; }
     .nav-toggle{ display:block; }
     .form-row{ grid-template-columns:1fr;}
-    .sticky-cta{ display:flex; }
     section{ padding:60px 0;}
+  }
+
+  @media (max-width: 600px){
+    .wrap{ padding:0 18px; }
+    .nav{ padding:14px 18px; }
+    .nav-phone{ display:none; }
+    .hero{ padding-top:28px; padding-bottom:56px; }
+    .hero h1{ font-size:28px; }
+    .hero-sub{ font-size:15px; }
+    .price-now{ font-size:30px; }
+    .hero-ctas{ flex-direction:column; align-items:stretch; }
+    .hero-ctas .btn{ width:100%; }
+    .hero-badge{ display:none; }
+    .section-head h2{ font-size:26px; }
+    .pain-card, .price-card{ padding:24px 20px; }
+    form{ padding:22px 18px; }
+    .order-info h2{ font-size:26px; }
+    .footer-bottom{ flex-direction:column; align-items:flex-start; }
   }
 </style>
 </head>
@@ -635,14 +648,6 @@
     </div>
   </div>
 </footer>
-
-<div class="sticky-cta" id="stickyCta">
-  <div>
-    <div class="stxt">Liệu trình 3 hộp</div>
-    <div class="sprice">1.300.000₫</div>
-  </div>
-  <a href="#dathang" class="btn btn-primary">Đặt hàng ngay</a>
-</div>
 
 <script>
   // header scroll shadow
